@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # This module will establish a SSH connection to target box and fetch the file system info 
 
 import paramiko
@@ -143,3 +144,22 @@ ssh.close()
 print('connection to %s closed' %  host)
 
 
+# Milestone 1:
+
+# Explore all the functionalities of paramiko, json, df, dict, list, user input, tuple, sphinx.
+
+# Milestone 2:
+
+# Convert to proper functions. Code cleanup. Do not delete any code. Just move it to the end of the file.
+# User argparse module for command line parsing.
+# Write proper documentation for the functions
+# Run pylint tool on the code. Make sure the score is above 8 atleast. Try not to repeat the mistakes in further code you write.
+
+
+# Milestone 3:
+# Error handling.
+# Convert it into a dictionary of dictionray. The user should be able to access the file system stat using two dictionary lookups.
+# Show the df output in a table using tabulate
+
+# Milestone 4:
+# Display the graph.

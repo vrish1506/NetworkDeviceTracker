@@ -4,6 +4,8 @@
 
 import sys
 import paramiko
+import pdb
+
 def connecttotargetmachine():
     """This functions connects to target machine."""
     print("Entered data is: " + str(sys.argv) + "\n")
@@ -19,12 +21,11 @@ def connecttotargetmachine():
 
 def executecommandontargetbox(_ssh_, _host_, _command_):
     """This functions executes the command on the target machine."""
-    print('Running remote command DF on %s' % _host_ + "\n")
-    stdin, stdout = _ssh_.exec_command(_command_)
-    print("Result of '%s' command on '%s' host" % (_command_, _host_) + "\n")
+    stdin, stdout, stderr = _ssh_.exec_command(_command_)
+    print("Result of %s command on %s host is %s" % (_command_, _host_, stdout) + "\n") 
     writetojsonandfile(_ssh_, _host_, stdout)
     for line in stdout.read().splitlines():
-        print('%s' % (str(line) + "\n"))
+        print("%s" % (str(line) + "\n"))
     stdin.close()
     return
 
@@ -32,10 +33,11 @@ def writetojsonandfile(_ssh_, _host_, stdout):
     """This function writes the console output to Json object and writes to log file"""
     _json_output = stdout.read()
     print("---------------Writing to log.txt------------\n")
+    #print("JSON variable %s " % _json_output)
     _logfile_ = open('Log.txt', 'wb')
     _logfile_.write(_json_output)
     _logfile_.close()
-    parseandstoreoutputindictionary(_host_, _ssh_)
+    parseoutput(_host_, _ssh_)
     return
 
 def printoutputonconsole(stdout):
@@ -45,24 +47,87 @@ def printoutputonconsole(stdout):
         print('%s' % (str(line) + "\n"))
     return
 
+
+def parseoutput(_host_, _ssh_):
+    """This function parses the output"""
+    myDict = {}
+    i = 0
+    with open("Log.txt", "r") as _logfile_:
+         _ = next(_logfile_)
+         for line in _logfile_:
+             splitLine =  line.split()
+             #print("splitLine %s " % splitLine)
+             myDict[splitLine[5]] = ",".join(splitLine[0:])
+    AskForFilteredOutput(myDict)    
+    return
+
+def AskForFilteredOutput(_myDict_):
+    """Filter the output"""
+    print("Dictionary %s " % _myDict_)
+    _input_ = input("Enter the filesystem to know about ?")
+    elts_dict = _myDict_[_input_]
+    print("Filesystem %s " % elts_dict)
+    _input1_ = input("Enter the filed to know about ?")
+    if _input1_ == '%':
+        print(elts_dict[4])
+
+    if _input1_ == 'Available':
+       print(elts_dict[3])
+       
+    if _input1_ == 'Filesystem':
+       print(elts_dict[0])
+      
+    if _input1_ == 'blocks':
+       print(elts_dict[1])
+        
+    if _input1_ == 'Used':
+       print(elts_dict[2])        
+    
+    return
+
+#           print("%s " % line)
+            #length = len(line)
+            #print("Length of line %s" % length)
+#            for word in line:
+#                print("Words %s " % word)
+#                print("Length of word %s" % len(word))
+#            (key,val) = (line.split(' ') for line in _lines_)
+#            d[int(key)] = val
+#            print(d[key])
+    	   
+
+#    [3~line = _logfile_.next()
+#_lines_ = (line.strip() for line in _logfile_.readlines())
+#    keys = (_lines.split('\n')[0] for line in _logfile_)
+#    print("Keys %s " % str(keys) + "\n")
+#    _logfile_.close()
+#    print("Lines from file %s" % _lines_)
+#    _splittedlines_ = (line.split() for line in _lines_)
+#    print("Splitted lines %s" % dict(_splittedlines_[0]))
+#    return   
+
+
+'''
 def parseandstoreoutputindictionary(_host_, _ssh_):
     """This function reads the log file and stores the output in dictionary using loop """
     _logfile_ = open('Log.txt', 'r')
     _lines_ = (line.strip() for line in _logfile_.readlines())
     _logfile_.close()
     _splittedlines_ = (line.split() for line in _lines_)
-    _listofcolumndata_ = zip(*_splittedlines_)
+    _listofcolumndata_ = list(zip(*_splittedlines_))
+    print("List of Column Data Variable %s" % _listofcolumndata_)
     _input2_ = input("Enter the mounted file system to know the details for ? ")
     j = 0
-    _length_ = len(_listofcolumndata_)+2
+    _length_ = len(_listofcolumndata_) + 2
     print("Length of List Of Column Data %s" % _length_)
     elts_dict = {}
     while j <= _length_:
         elts = (x[j] for x in _listofcolumndata_)
+        print("elts %s" % elts)
         if _input2_ in elts:
             print("File system to know details of %s " % elts)
             _input3_ = input("Enter the field to know about ?")
-            elts_dict = dict((j, elts[j]) for j in range(len(elts)))
+            elts_dict = dict((j, elts[j]) for j in range(len((elts))))
             print("Dictionary %s " % elts_dict)
             print('\n')
             if _input3_ == '%':
@@ -82,9 +147,10 @@ def parseandstoreoutputindictionary(_host_, _ssh_):
                 break
             else:
                 print("No Input for field, printing complete details %s :" % elts_dict)
-    j += 1
+        j += 1
     closeconnectiontotargetmachine(_host_, _ssh_)
     return
+'''
 
 def closeconnectiontotargetmachine(_host_, _ssh_):
     """ This function closes the connection to target machine """

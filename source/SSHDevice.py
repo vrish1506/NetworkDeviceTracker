@@ -5,6 +5,8 @@
 import sys
 import paramiko
 import pdb
+import pprint
+from tabulate import tabulate
 
 def connecttotargetmachine():
     """This functions connects to target machine."""
@@ -37,7 +39,7 @@ def writetojsonandfile(_ssh_, _host_, stdout):
     _logfile_ = open('Log.txt', 'wb')
     _logfile_.write(_json_output)
     _logfile_.close()
-    parseoutput(_host_, _ssh_)
+    parsefile(_host_, _ssh_)
     return
 
 def printoutputonconsole(stdout):
@@ -48,7 +50,7 @@ def printoutputonconsole(stdout):
     return
 
 
-def parseoutput(_host_, _ssh_):
+def parsefile(_host_, _ssh_):
     """This function parses the output"""
     myDict = {}
     i = 0
@@ -58,32 +60,45 @@ def parseoutput(_host_, _ssh_):
              splitLine =  line.split()
              #print("splitLine %s " % splitLine)
              myDict[splitLine[5]] = ",".join(splitLine[0:])
-    AskForFilteredOutput(myDict)    
+    filteredoutput(myDict)    
     return
 
-def AskForFilteredOutput(_myDict_):
+def filteredoutput(_myDict_):
     """Filter the output"""
     print("Dictionary %s " % _myDict_)
     _input_ = input("Enter the filesystem to know about ?")
     elts_dict = _myDict_[_input_]
-    print("Filesystem %s " % elts_dict)
-    _input1_ = input("Enter the filed to know about ?")
-    if _input1_ == '%':
-        print(elts_dict[4])
+    print("Filesystem %s " % elts_dict) 
+    _input1_ = input("Enter the filed to know about ?")   
 
-    if _input1_ == 'Available':
-       print(elts_dict[3])
-       
-    if _input1_ == 'Filesystem':
-       print(elts_dict[0])
-      
-    if _input1_ == 'blocks':
-       print(elts_dict[1])
-        
-    if _input1_ == 'Used':
-       print(elts_dict[2])        
-    
+    retval = makelinetodict(_myDict_)
+
+    print("The field you asked for is %s" % retval[_input_][_input1_]) 
+    table = [["Filesystem",_input1_], [_input_, retval[_input_][_input1_]]]
+    #print(tabulate(table, headers=["Filesystem" ,_input1_]))
+    print(tabulate(table))
     return
+
+
+def makelinetodict(_myDict_):
+    "Covert the line fields to dictionary"""
+    newDict = {}
+   
+    fields = {"0": "Filesystem", "1": "1k-blocks", "2": "Used", "3": "Available", "4": "%", "5": "Mounted On"}
+
+    for key, value in _myDict_.items():
+        lineFields = value.split(",")
+        fsDict = {}
+        for index, f in enumerate(lineFields):
+            ff = fields[str(index)]
+            fsDict[ff] = f
+
+        newDict[key] = fsDict
+
+    return newDict
+
+    
+    
 
 #           print("%s " % line)
             #length = len(line)

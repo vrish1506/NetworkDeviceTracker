@@ -7,6 +7,12 @@ import paramiko
 import pdb
 import pprint
 from tabulate import tabulate
+import plotly.plotly as py
+import plotly.graph_objs as go
+from plotly.offline import plot,iplot
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+
 
 def connecttotargetmachine():
     """This functions connects to target machine."""
@@ -69,14 +75,37 @@ def filteredoutput(_myDict_):
     _input_ = input("Enter the filesystem to know about ?")
     elts_dict = _myDict_[_input_]
     print("Filesystem %s " % elts_dict) 
-    _input1_ = input("Enter the filed to know about ?")   
+    _input1_ = input("Enter the filed to know about ?")  
 
-    retval = makelinetodict(_myDict_)
+    if len(_input1_) > 0 :
+        retval = makelinetodict(_myDict_)
+        #print("The field you asked for is %s" % retval[_input_][_input1_]) 
+        table = [["Filesystem",_input1_], [_input_, retval[_input_][_input1_]]]
+        #print(tabulate(table, headers=["Filesystem" ,_input1_]))
+        print(tabulate(table, tablefmt="fancy_grid"))
 
-    print("The field you asked for is %s" % retval[_input_][_input1_]) 
-    table = [["Filesystem",_input1_], [_input_, retval[_input_][_input1_]]]
-    #print(tabulate(table, headers=["Filesystem" ,_input1_]))
-    print(tabulate(table))
+        y=[_input1_]
+        x=retval[_input_][_input1_]
+        print("X %s" % x[0])
+        print(type(x))
+        # x_pos = [i for i, _ in enumerate(x)]
+
+        plt.bar(int(x[0]), 15, color='pink')
+        plt.xlabel("Filesystem")
+        plt.ylabel("Usuage")
+        plt.title("Test Graph")
+
+        #for i in range(len(x)):
+        plt.hlines(int(x[0]),0,int(x[0]))
+       
+        #plt.xticks(x_pos, x)
+        plt.show()
+
+    else:
+        #print(elts_dict)
+        #table = [["Filesystem", "1K-blocks", "Used", "Available", "Used%", "Mounted On"], elts_dict]
+        pprint.pprint(elts_dict)
+          
     return
 
 

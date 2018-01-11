@@ -90,13 +90,13 @@ def filteredoutput(_myDict_):
         print(type(x))
         # x_pos = [i for i, _ in enumerate(x)]
 
-        plt.bar(int(x[0]), 15, color='pink')
+        plt.bar(int(x[0]), 15, color='orange')
         plt.xlabel("Filesystem")
         plt.ylabel("Usuage")
         plt.title("Test Graph")
 
         #for i in range(len(x)):
-        plt.hlines(int(x[0]),0,int(x[0]))
+        plt.hlines(0,0,int(x[0]))
        
         #plt.xticks(x_pos, x)
         plt.show()

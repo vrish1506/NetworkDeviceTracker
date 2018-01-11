@@ -12,3 +12,6 @@ print("Checkin-3")
 
 print("CommitBuildTriggerTest-25")
 print("Test-Commit-WebHookInGit")
+
+
+print("Test-Commit-WebHookInGit With More Settings")

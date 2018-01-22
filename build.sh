@@ -1,4 +1,5 @@
-#This script deploys build on build machine and extracts it in QA folder for testing'''
+#This script deploys build on build machine and extracts it in QA folder for testing
+
 #! /bin/bash
 DATE=`date | sed 's/ /_/g' | sed 's/:/_/g'`
 PRODUCT_NAME="PRODUCT_"

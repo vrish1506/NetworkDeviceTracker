@@ -9,4 +9,4 @@ echo ${PRODUCT_FULL_NAME}
 
 echo "Extracting..."
 
-#tar -zxvf ${PRODUCT_FULL_NAME}
+tar -zxvf ${PRODUCT_FULL_NAME}

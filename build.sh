@@ -4,5 +4,9 @@ PRODUCT_NAME="PRODUCT_"
 PRODUCT_FULL_NAME=${PRODUCT_NAME}${DATE}".tar"
 
 
-tar -cf ${PRODUCT_FULL_NAME} source/product.py install.sh execute.sh
+tar -cf ${PRODUCT_FULL_NAME} source/product.py execute.sh
 echo ${PRODUCT_FULL_NAME}
+
+echo "Extracting..."
+
+tar -zxvf ${PRODUCT_FULL_NAME}

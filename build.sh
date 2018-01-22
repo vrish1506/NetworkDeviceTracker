@@ -5,7 +5,7 @@ PRODUCT_FULL_NAME=${PRODUCT_NAME}${DATE}.tar
 
 echo ${PRODUCT_FULL_NAME}
 
-tar -cvf ${PRODUCT_FULL_NAME} ./source/product.py ./build.sh ./execute.sh
+tar -cvf ${PRODUCT_FULL_NAME} /home/ubuntu/NetworkDeviceTracker/source/product.py /home/ubuntu/NetworkDeviceTracker/build.sh home/ubuntu/NetworkDeviceTracker/execute.sh
 
 if [ "$?" = "0" ]; then
     echo ".tar is created successfully"

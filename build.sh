@@ -17,3 +17,11 @@ fi
 
 tar -xf ${PRODUCT_FULL_NAME} -C /home/ubuntu/JenkinsQA-NetworkDeviceTracker
 
+if [ "$?" = "0" ]; then
+    echo ".tar Extracted successfully in JenkinsQA-NetworkDeviceTracker directory"
+else
+    echo "error in extracting .tar"
+    exit 1
+fi
+
+

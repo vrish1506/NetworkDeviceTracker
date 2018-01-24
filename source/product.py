@@ -28,7 +28,7 @@ def Add(number1, number2):
     print("Added Numbers = %d" % number3)
 
 ##This is substract function
-def subtract(number1, number2):
+def Subtract(number1, number2):
     number3 = number1 - number2
     print("Subtracted Numbers = %d" % number3)
 
@@ -36,5 +36,5 @@ def subtract(number1, number2):
 
 
 
-add(15, 75)
-subtract(5, 1)
+Add(15, 75)
+Subtract(5, 1)

@@ -33,4 +33,5 @@ def subtract(number1, number2):
 
 
 
+add(15, 75)
 subtract(5, 1)
